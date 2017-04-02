@@ -3,18 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Engine
 {
-    public class LivingCreature
+    public class LivingCreature : INotifyPropertyChanged
     {
-        public int CurrentHitPoints;
         public int MaximumHitPoints;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private int _currentHitPoints;
+
+        public int CurrentHitPoints
+        {
+            get { return _currentHitPoints; }
+            set
+            {
+                _currentHitPoints = value;
+                OnPropertyChanged("CurrentHitPoints");
+            }
+        }
 
         public LivingCreature(int currentHitPoints, int maximumHitpoints)
         {
             CurrentHitPoints = currentHitPoints;
             MaximumHitPoints = maximumHitpoints;
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }
